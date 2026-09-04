@@ -1,7 +1,6 @@
-package main
+package prana
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
@@ -49,28 +48,15 @@ func TerminalSize() (width, height int) {
 	return width, height
 }
 
-func ScreenBox(header, footer string) string {
+func ScreenBox(header, footer string, x int) string {
 	w, h := TerminalSize()
 	box := BoxConfig{
 		Content: []string{},
 		Width:   w,
-		Height:  h - 1,
+		Height:  h - x,
 		Header:  header,
 		Footer:  footer,
 		Border:  lipgloss.RoundedBorder(),
 	}
 	return Box(box) //HEY FUTURE ME REMOVE THIS -1 H WHEN U ARE DONE WITH DEBUGGING
-}
-
-func main() {
-	box := BoxConfig{
-		Content: []string{"LOL"},
-		Width:   32,
-		Height:  8,
-		Header:  "PRANA",
-		Footer:  "ESC TO EXIT",
-		Border:  lipgloss.RoundedBorder(),
-	}
-
-	fmt.Println(Box(box))
 }
