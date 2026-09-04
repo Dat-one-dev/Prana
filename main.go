@@ -12,8 +12,8 @@ type BoxConfig struct {
 	Content []string
 	Width   int
 	Height  int
-	Header  []string
-	Footer  []string
+	Header  string
+	Footer  string
 	Border  lipgloss.Border
 }
 
@@ -28,12 +28,12 @@ func Box(config BoxConfig) string {
 	box := style.Render(config.Content...)
 	lines := strings.Split(box, "\n")
 
-	if len(config.Header) > 0 {
-		lines[0] = borderText(lines[0], strings.Join(config.Header, " | "))
+	if config.Header != "" {
+		lines[0] = borderText(lines[0], config.Header)
 	}
 
-	if len(config.Footer) > 0 {
-		lines[len(lines)-1] = borderText(lines[len(lines)-1], strings.Join(config.Footer, " | "))
+	if config.Footer != "" {
+		lines[len(lines)-1] = borderText(lines[len(lines)-1], config.Footer)
 	}
 
 	return strings.Join(lines, "\n")
@@ -48,7 +48,7 @@ func TerminalSize() (width, height int) {
 	return width, height
 }
 
-func ScreenBox(header, footer []string, x int) string {
+func ScreenBox(header, footer string, x int) string {
 	w, h := TerminalSize()
 	box := BoxConfig{
 		Content: []string{},
