@@ -18,9 +18,14 @@ type BoxConfig struct {
 }
 
 func borderText(line, text string) string {
-	runes := []rune(line)
-	pos := (len(runes) - len([]rune(text))) / 2
-	return string(runes[:pos]) + text + string(runes[pos+len([]rune(text)):])
+	linesRunes := []rune(line)
+	textW := lipgloss.Width(text)
+	lineW := len(linesRunes)
+	if textW >= lineW {
+		return text
+	}
+	pos := (lineW - textW) / 2
+	return string(linesRunes[:pos]) + text + string(linesRunes[pos+textW:])
 }
 
 func Box(config BoxConfig) string {
