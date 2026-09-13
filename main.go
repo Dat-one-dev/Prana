@@ -9,12 +9,14 @@ import (
 )
 
 type BoxConfig struct {
-	Content []string
-	Width   int
-	Height  int
-	Header  string
-	Footer  string
-	Border  lipgloss.Border
+	Content       []string
+	Width         int
+	Height        int
+	Header        string
+	Footer        string
+	Border        lipgloss.Border
+	Align         lipgloss.Position
+	AlignVertical lipgloss.Position
 }
 
 func borderText(line, text string) string {
@@ -29,7 +31,7 @@ func borderText(line, text string) string {
 }
 
 func Box(config BoxConfig) string {
-	style := lipgloss.NewStyle().Width(config.Width).Height(config.Height).Align(lipgloss.Center).AlignVertical(lipgloss.Center).Border(config.Border)
+	style := lipgloss.NewStyle().Width(config.Width).Height(config.Height).Align(config.Align).AlignVertical(config.AlignVertical).Border(config.Border)
 	box := style.Render(config.Content...)
 	lines := strings.Split(box, "\n")
 
@@ -56,12 +58,14 @@ func TerminalSize() (width, height int) {
 func ScreenBox(header, footer string, x int) string {
 	w, h := TerminalSize()
 	box := BoxConfig{
-		Content: []string{},
-		Width:   w,
-		Height:  h - x,
-		Header:  header,
-		Footer:  footer,
-		Border:  lipgloss.RoundedBorder(),
+		Content:       []string{},
+		Width:         w,
+		Height:        h - x,
+		Header:        header,
+		Footer:        footer,
+		Border:        lipgloss.RoundedBorder(),
+		Align:         lipgloss.Center,
+		AlignVertical: lipgloss.Center,
 	}
 	return Box(box) //HEY FUTURE ME REMOVE THIS -1 H WHEN U ARE DONE WITH DEBUGGING
 }
